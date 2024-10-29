@@ -1,0 +1,9 @@
+【算術式を指定できる句】
+・SELECT句
+・HAVING句
+・WHERE句
+・ORDER BY句
+・GROUP BY句
+
+【算術式を指定できない句】
+FROM句
