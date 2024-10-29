@@ -1,0 +1,30 @@
+SQL*PlusやSQL Developerなどのツールでは、置換変数を利用できる。
+
+置換変数を利用すると、WHERE句の条件などに指定する値を、
+SQL文の中に直接記述するのではなく、実行時に値を指定できるようになる。
+
+DEFINEコマンドはSQL＊Pluseのコマンドで、ユーザー定義の変数に値を割り当てたり、
+変数の値を確認したりできる。
+
+【DEFINEコマンドの使い方】
+DEFINE 変数名 [= 値]　:変数に設定されている値を表示[変数に値を設定]
+UNDEFINE 変数名:変数に設定されている値を破棄
+
+【例題】
+次のSQL文の実行結果として正しいものはどれですか。
+ただし、日付書式は"RR-MM-DD"とします。
+
+　DEFINE date = '10-04-01'
+
+　SELECT department_id, employee_name, hiredate FROM employees
+　WHERE hiredate > '&date' AND department_id = &id;
+
+    「date」と「id」の入力を促される
+    ☑「id」のみ入力を促される
+    「date」は予約語のため、DEFINEコマンドでエラーとなる
+    「date」のみ入力を促される
+
+●ポイント1：「DEFINE date = '10-04-01'」
+・最初にdate変数に日付の字列が指定されているため、SELECT文実行時にはdate変数の値の入力を促されることはない。
+・通常「&置換変数」はSQL文実行後に変数の値が破棄されるが、DEFINEで定義したdate変数は、
+セッションが切断されるか、UNDEFINEコマンドで破棄するまで値が保持される。
