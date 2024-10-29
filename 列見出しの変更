@@ -1,0 +1,33 @@
+SQL文の列見出しを変更したい場合は、SELECT句の列別名を指定する。
+(列別名は算術式にも指定できる。)
+
+【列別名の表記ルール】
+・列別名は項目名と列別名をスペースで区切るか、明示的にASキーワードで指定する。
+・大文字と小文字を区別したり、文字列の中にスペースを含める場合は、
+　列別名を「" "」で囲む必要がある。
+
+【正しいSQL文】
+・SELECT employee_name 従業員名, salary 給与 FROM employees;
+項目名と列別名がスペースで区切られている。
+日本語名は使用可能だが、「" "」で囲む必要はない。
+＞＞正しいSQL文。
+
+・SELECT employee_name "Employee Name", salary AS Salary FROM employees;
+列別名をASで明示的に指定している。
+「salary AS Salary」はどちらも「" "」で囲われていないので、共に大文字として識別される。
+＞＞正しいSQL文。
+
+・SELECT employee_name, salary "Salary($)" FROM employees;
+列別名「"Salary($)"」について、「($)」が「" "」で囲まれているので、記号として使用できる。
+＞＞正しいSQL文。
+
+【誤ったSQL文】
+・SELECT employee_name AS Employee Name, salary AS Salary FROM employees;
+列別名「Employee Name」はスペースを含むので、「" "」で囲む必要がある。
+＞＞誤ったSQL文。
+
+・SELECT employee_name AS EmployeeName, salary Salary($) FROM employees;
+列別名「Salary($)」について、列別名に記号を含めたい場合は
+列別名を「" "」で囲む必要がある。
+＞＞誤ったSQL文。
+
