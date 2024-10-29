@@ -1,0 +1,30 @@
+Oracle12cから、SELECT文の問い合わせ結果として返される行数を制限できる機能である、
+row_limited_clause(行制限の条件)が加わった。
+＞これにより、例えば上位10番目から20番目のデータを簡単に取り出すことができる。
+
+row_limiting_clauseのFETCH句は返される行数、または行の割合を指定して、
+SELECT文の結果として返される行数を制限する。
+
+【FETCH句の書き方】
+FETCH { FIRST | NEXT}
+{ 返される行数 | 返される行の割合　PERCENT }
+{ ROW | ROWS }
+{ ONLY | WITH TIES }
+
+【例題】
+給与の高い順に、上位15%の従業員の情報を表示し、SALARY列に値が入っていない従業員は表示しない場合の
+問い合わせは？
+
+ポイント1：給与の高い順に15%
+＞＞ORDER BY句でSALARY列を降順(DESC)にソートする。
+
+ポイント2：SALARY列に値が入っていない従業員は表示しない
+＞＞NULL値の行が先頭に表示されないように、NULL LAST句を記述する。
+
+＞＞ソートした後、FETCH句で15%を指定する。
+
+(解答)
+・SELECT employee_id, employee_name, salary
+  FROM employees
+　ORDER BY salary DESC NULLS LAST
+　FETCH FIRST 15 PERCENT ROWS ONLY;
