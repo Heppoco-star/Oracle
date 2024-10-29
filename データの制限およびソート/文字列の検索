@@ -21,3 +21,17 @@ BETWEEN演算子の下限値、上限値に文字リテラルが指定された�
 Lantern
 HighPower_LED_ハンディライト2
 
+【補足】
+範囲指定した検索結果をソートして表示する場合は「ORDER BY」句を使う。
+ORDER BY句で指定できるのは、列名、SELECT句に指定されている項目の順番(数値)がある。
+例)
+SELECT employee_id, employee_name, hiredate
+FROM employees
+WHERE hiredate >= '03-04-01' AND hiredate <= '12-04-01'
+ORDER BY 3 DESC, 1;
+
+SELECT employee_id, employee_name, hiredate
+FROM employees
+WHERE hiredate
+BETWEEN '03-04-01' AND '12-04-01'
+ORDER BY hiredate DESC, employee_id;
