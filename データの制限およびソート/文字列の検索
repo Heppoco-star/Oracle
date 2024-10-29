@@ -1,0 +1,23 @@
+【例題】
+下記のSQL分を実行して表示される製品名として、正しいものをすべて選択しなさい。
+　SELECT prod_name
+　FROM products
+　WHERE UPPER(prod_name) BETWEEN 'H' AND 'LE';
+  
+  LEDライト
+  Lantern
+  (Wide)LEDシーリングライト
+  led light
+  HighPower_LED_ハンディライト2
+
+【ポイント】
+BETWEEN演算子の下限値、上限値に文字リテラルが指定された場合、指定された文字列の文字コードの範囲で
+検索される。
+
+上記の設問の場合、「UPPER(prod_name)」で、すべて大文字に変換された商品名の頭文字が「H」で始まるものから、
+「LE」という２文字の文字コードの範囲までが検索される。
+
+【回答】
+Lantern
+HighPower_LED_ハンディライト2
+
