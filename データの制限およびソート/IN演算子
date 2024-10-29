@@ -1,0 +1,26 @@
+【IN演算子とは】
+IN演算子を使用すると、リストに指定した複数の値のいずれかと一致する行を検索できる。
+
+【IN演算子の指定方法】
+WHERE 項目名 IN (値1[, 値2, …])
+
+OR演算子で服すの条件を指定している場合、IN演算子で置き換えることができる。
+
+WHERE department_id = 1
+  OR department_id = 2
+  OR department_id =3
+
+↓ IN演算子で置き換え
+
+WHERE department_id IN (1, 2, 3)
+
+※department_idが1,2,3以外を指定したい場合
+(IN演算子を使用した場合)
+WHERE department_id NOT IN (1, 2, 3)
+
+(AND演算子を使用した場合)
+WHERE departmen_id != 1
+  AND department_id != 2
+  AND department_id != 3
+
+
