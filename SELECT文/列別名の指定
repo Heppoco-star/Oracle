@@ -12,3 +12,22 @@ SQLの実行結果に表示される列見出しには、列別名を指定で�
 ＞＞正しいSQL文
 
 ・SELECT employee_name AS "EMPNAME" FROM employees ORDER BY empname;
+SELECT句の"EMPNAME"はすべて大文字であり、「ORDER BY empname」は小文字表記だが、
+デフォルトで大文字の「EMPNAME」として識別される。
+＞＞正しいSQL文。
+
+・SELECT employee_name "EMPLOYEE NAME" FROM employees ORDER BY EMPLOYEE NAME;
+"EMPLOYEE NAME"はスペースを含む文字列のため、ORDER BY句の「EMPLOYEE NAME」も" "で
+囲む必要がある。
+＞＞誤ったSQL文。
+
+・SELECT employee_name emp#name FROM employees ORDER BY emp#name;
+特殊文字(#,$,_)はオブジェクト名として使用可能なので、ORDER BY句でも" "で
+囲む必要はない。
+＞＞正しいSQL文。
+※ただし、特殊文字を列別名の先頭や単独で使用する場合は、列別名を" "で囲む必要がある。
+
+・SELECT employee_name AS Employee_Name FROM employees ORDER BY "Employee_Name";
+Select句の「Employee_Name」は" "で囲われていないので、すべて大文字で認識されるが、
+ORDER BY句の「"Employee_Name"」は" "で囲われているので、大文字と小文字を区別する。
+＞＞誤ったSQL文。
