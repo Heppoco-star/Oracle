@@ -1,0 +1,55 @@
+1. OSログイン
+
+2. DB、リスナーの状態確認
+$ . ~/<DB名>.env
+$ env | grp ORACLE_SID
+$ sqlplus / as sysdba
+SQL> show con_name
+SQL> select instance_name, host_name, status from v$instance;
+SQL> select inst_id, con_id, name, open_mode from gv$pdbs order by 1;
+SQl> exit
+
+$ srvctl status listener
+$ srvctlstatus scan_listener
+
+3. データファイルのリカバリ
+$ export NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
+$ rman target sys/<パスワード>@<CDB接続識別子>
+RMAN> RUN {
+         SET UNTIL TIME "TO_DATE('<戻したい日付> <戻したい時間>', 'YYYY-MM-DD HH24:MI:SS')";
+         restore pluggable database <PDB名>;
+         recover pluggable database <PDB名>;
+         }
+RMAN> alter plugable database <PDB名> open resetlogs;
+RMAN> exit
+※resetlogsオプションを指定してデータベースをオープンした場合は、必ず直後にフルバックアップを取得する。
+（resetlogsオプションを使用してデータベースをオープンすると過去に取得したバックアップファイルは使用できなくなる。）
+
+4. DBの停止、起動
+$ srvctl stop database -db <DB名>
+$ srvctl status databse -db <Db名> -verbose
+$ srvctl start databse -db <DB名>
+$ srvctl status databse -db <DB名> -verbose
+$ /opt/app/19.xx.xx/grid/bin/crsctl stat res -t
+
+5. DB接続確認
+$ . ~/<環境変数定義ファイル名>.env
+$ env | grep ORACLE_SID
+$ sqlplus / as sysdba
+SQL> show con_name
+SQL> select isntance_name, host_name, status from v$instance;
+SQL> show pdbs
+SQL> alter session set container = <PDB名>;
+SQL> show con_name
+SQL> exit
+
+$ sqlplus system/<パスワード>@<PDB接続識別子>
+SQL> show con_name
+SQl> select instance_name, status from v$instance;
+
+$ sqlplus system/<パスワード>@<PDb接続識別子名>
+SQL> show con_name
+
+
+
+
