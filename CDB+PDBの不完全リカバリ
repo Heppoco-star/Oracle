@@ -1,0 +1,75 @@
+1. OSログイン
+
+2. CDBの停止
+$ srvctl status database -db <DB名> -verbose
+$ srvctl stop database -db <DB名> -stopoption abort
+$ srvctl status database -db <DB名> -verbose
+
+3. spfileの復旧
+$ . ~/<環境変数定義ファイル名>.env
+$ env | grep ORACLE_SID
+$ sqlplus / as sysdba
+SQL> startup nomount pfile='/xxx/xxx/xxx/pfile_backup_<DB名>.ora';
+SQL> create spfile='/xxx/xxx/xxx/spfile<DB名>.ora' from pfile='/xxx/xxx/xxx/pfile_backup_<DB名>.ora'；
+SQL> shutdown immediate
+SQL> startup nomount
+SQL> exit
+$ srvctl  config database -db <DB名>
+
+4. 制御ファイルの復旧
+$ export NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
+$ rman target /
+RMAN> set DBID=<DBID>;
+RMAN> run {set controlfile autobackup format for device type disk to '+<対象DBのFRA領域名> /<DB名>/ctlfile_backup_%d-%F';
+        restore controlfile from autobackup; }
+RMAN> alter database mount;
+
+5. データファイルのリストアリカバリ
+RMAN> restore database;
+RMAN> recover database;
+RMAN> exit
+※この時出力されるエラーメッセージは無視してOK
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: recoverコマンドが11/14/2024 14:45:43で失敗しました
+RMAN-06054: メディア・リカバリがスレッド1 (順序525)の不明なアーカイブ・ログおよび16082147の起動SCNをリクエストしています
+
+6. DBを起動する
+$ sqlpus / as sysdba
+SQL> select file#, name, error, recover, fuzzy, checkpoint_time from v$datafile_header;
+SQL> alter database open resetlogs;
+SQL> exit
+$ srvctl stop database -db <DB名>
+$ srvctl status database -db <DB名> -verbose
+$ srvctl start databae -db <DB名>
+$ srvctl status database -db <DB名> -verbose
+$ /opt/app/19.xx.xx/bin/crsctl stat res -t
+※resetlogsオプションを指定してデータベースをオープンした場合は、必ず直後にフルバックアップを取得する。
+（resetlogsオプションを使用してデータベースをオープンすると過去に取得したバックアップファイルは使用できなくなる。）
+
+7. DB接続確認
+$ . ~/<環境変数定義ファイル名>.env
+$ env | grep ORACLE_SID
+$ sqlplus / as sysdba
+SQL> show con_name
+SQL> select instance_name, host_name, status from v$instance;
+SQL> show pdbs
+SQL> alter session set container = <PDB名>;
+SQL> show con_name
+SQL> exit
+
+$ sqlplus system/<パスワード>@<CDB接続識別子>
+SQL> show con_name
+SQL> select instance_name, host_name, status from v$instance;
+SQl> exit
+
+$ sqlplus system/<パスワード>@<PDB接続識別子>
+SQL> show con_name
+SQL> exit
+
+
+
+
+
+
