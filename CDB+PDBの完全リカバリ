@@ -1,0 +1,54 @@
+1.OSログイン
+
+2. CDBの停止、マウントモードで起動
+$ srvctl stop database -db <DB名>　-stopoption abort
+$ srvctl status database -db <DB名> -verbose
+$ srvctl start database -db <DB名> -startoption mount
+$ srvctl status database -db <DB名> -verbose
+
+3. リストアリカバリを実施
+$ . ~/<環境ファイル名>.env
+$ env | grep ORACLE_SID
+$ export date_format='YYYY/MM/DD24:MI:SS';
+$ rman target /
+RMAN> restore database;
+RMAN> recover database;
+
+4. DB起動確認
+RMAN> alter database open;
+RMAN> exit
+$ srvctl status database -db <DB名> -verbose
+$ srvctl stop database -db <DB名>
+$ srvctl status database -db <DB名> -verbose
+$ srvctl start database -db <DB名>
+$ srvctl status database -db <DB名>
+$ /opt/app/19.xx.xx/grid/bin/crsctl start res -t
+
+5. 接続確認
+$ . ~/<環境変数ファイル名>.env
+$ env | grep ORACLE_SID
+$ sqlplus / as sysdba
+SQL> select instance_name, host_name from v$instance;
+SQL> show pdbs
+SQL> alter session set container = <PDB名>;
+SQl> show con_name
+SQL> exit
+
+$ sqlplus system/<パスワード>@<CDB接続識別子>
+SQL> show con_name
+SQL> select instance_name, host_name, status from v$instance;
+SQL> show pdbs
+SQL> alter session set container = <PDB名>;
+SQL> show con_name
+SQL> exit
+
+$ sqlplus system/<パスワード>@<PDB接続識別子>
+SQL> show con_name
+SQl> exit
+
+
+
+
+
+
+
