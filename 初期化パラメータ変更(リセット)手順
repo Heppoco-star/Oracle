@@ -1,0 +1,53 @@
+目的：
+result_cache_max_size = 1G
+result_cache_mode =FORCE
+をリセットする。
+
+1. 現在のパラメータファイルをバックアップ（PFILEとして）
+--SQL*Plusでログイン
+sqlplus / as sysdba
+
+--spfileからpfileを作成する
+set pagesize 1000 lines 150
+create pfile='/xxx/xxx/xxx/pfile_yyyymmdd.ora' from spfile;
+
+--ファイルの一覧を確認
+!ls -l /xxx/xxx/xxx/
+
+--内容を出力しておく
+!cat /xxx/xxx/xxx/pfile_yyyymmdd.ora
+
+2. 設定変更前の設定値を確認
+set pagesize 1000 lines 150
+show parameter result_cache_max_size;
+show parameter result_cache_mode;
+
+3. 初期化パラメータ設定値の変更
+alter system reset result_cache_max_size scope=both;
+alter system reset result_cache_mode scope=both;
+
+4. DB再起動
+shutdown immediate
+satrtup
+
+5. 変更後設定値の確認
+set pagesize 1000 lines 150
+show parameter result_cache_max_size;
+show parameter result_cache_mode;
+
+6. 変更後のpfileを作成
+--バックアップ
+create pfile='/xxx/xxx/xxx/pfile_yyyymmdd.ora' from spfile;
+
+--ファイル確認
+!ls -l /xxx/xxx/xxx/
+
+--内容を出力
+!cat /xxx/xxx/xxx/pfile_yyyymmdd.ora
+
+--変更内容の比較
+! diff /xxx/xxx/xxx/pfile_yyyymmgg.ora /xxx/xxx/xxx/pfile_yyyymmgg.ora
+
+7. 接続確認(リスナー経由)
+connect system/<パスワード>@<接続識別子>
+※接続できることを確認
