@@ -1,0 +1,75 @@
+##############################################################################
+# Copyright (c) 1991, 2013 by Oracle Corporation
+##############################################################################
+ 
+###########################################
+# NLS
+###########################################
+nls_language="JAPANESE"
+nls_territory="JAPAN"
+ 
+###########################################
+# SGA Memory
+###########################################
+sga_target=2304m
+ 
+###########################################
+# Miscellaneous
+###########################################
+compatible=19.0.0
+diagnostic_dest=/u01/app/oracle
+enable_pluggable_database=true
+ 
+###########################################
+# Cursors and Library Cache
+###########################################
+open_cursors=300
+ 
+###########################################
+# Cache and I/O
+###########################################
+db_block_size=8192
+ 
+###########################################
+# System Managed Undo and Rollback Segments
+###########################################
+undo_tablespace=UNDOTBS1
+ 
+###########################################
+# Security and Auditing
+###########################################
+audit_file_dest="/u01/app/oracle/admin/orcl/adump"
+audit_trail=db
+remote_login_passwordfile=EXCLUSIVE
+ 
+###########################################
+# Sort, Hash Joins, Bitmap Indexes
+###########################################
+pga_aggregate_target=769m
+ 
+###########################################
+# Database Identification
+###########################################
+db_name="orcl"
+ 
+###########################################
+# Network Registration
+###########################################
+#local_listener=LISTENER_ORCL
+ 
+###########################################
+# File Configuration
+###########################################
+control_files=("/u01/app/oracle/oradata/ORCL/control01.ctl", "/u01/app/oracle/oradata/ORCL/control02.ctl")
+ 
+###########################################
+# Processes and Sessions
+###########################################
+processes=300
+ 
+###########################################
+# Shared Server
+###########################################
+dispatchers="(PROTOCOL=TCP) (SERVICE=orclXDB)"
+ 
+ 
