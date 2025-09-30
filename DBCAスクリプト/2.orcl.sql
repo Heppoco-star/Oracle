@@ -24,4 +24,13 @@ host /u01/app/oracle/product/19.0.0/dbhome_1/bin/orapwd file=/u01/app/oracle/pro
 
 ======================================================================================================================================================
 ・CreateDB.sql
+：DBを作成する。(マルチテナント構成の場合は、CDBの)SYSTEM,SYSAUX,TEMP,UNDO表領域の作成と、REDOログファイルを作成する。
+
+・CreateDBFiles.sql
+：CreateDB.sqlで作成しなかった(マルチテナント構成の場合は、CDBの)表領域を作成する。
+
+・CreateDBCatalog.sql
 ：
+
+
+
